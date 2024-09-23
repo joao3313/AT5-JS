@@ -13,48 +13,68 @@
 
 
 
-function cadastrarVestibulandos() {
-    const vestibulandos = [];
-    let totalVestibulandos = parseInt(prompt("Quantos vestibulandos você deseja cadastrar? (entre 5 e 20)"));
-
-    // Validação do número de vestibulandos
-    while (totalVestibulandos < 5 || totalVestibulandos > 20 || isNaN(totalVestibulandos)) {
-        totalVestibulandos = parseInt(prompt("Número inválido. Deve ser entre 5 e 20. Tente novamente:"));
-    }
-
-    for (let i = 0; i < totalVestibulandos; i++) {
-        const nome = prompt("Nome completo:");
-        const numeroInscricao = prompt("Número de inscrição:");
-        const anoNascimento = prompt("Ano de nascimento:");
-        const notas = {};
-
-        // Coleta as notas das 5 matérias
-        notas.natureza = parseInt(prompt("Nota de Natureza (0-1000):"));
-        notas.humanas = parseInt(prompt("Nota de Humanas (0-1000):"));
-        notas.linguagens = parseInt(prompt("Nota de Linguagens (0-1000):"));
-        notas.matematica = parseInt(prompt("Nota de Matemática (0-1000):"));
-        notas.redacao = parseInt(prompt("Nota de Redação (0-1000):"));
-
-        vestibulandos.push({ nome, numeroInscricao, anoNascimento, notas });
-    }
-
-    // Avaliação das notas
-    vestibulandos.forEach(vestibulando => {
-        document.write(`<h3>${vestibulando.nome}</h3>`);
-        for (const [materia, nota] of Object.entries(vestibulando.notas)) {
-            let mensagem;
-            if (nota >= 550) {
-                mensagem = "Aprovado";
-            } else if (nota < 400) {
-                mensagem = "Reprovado";
-            } else {
-                mensagem = "Recuperação";
-            }
-            document.write(`${materia.charAt(0).toUpperCase() + materia.slice(1)}: ${nota} - ${mensagem}<br>`);
-        }
-        document.write("<br>");
-    });
+// Função para validar nome completo .... Includes é um conjunto de caracteres dentro de uma string
+function validarNome(nome) {
+    return nome.trim().includes(" ") && nome.trim().length > 0;
 }
 
-// Inicia o cadastro
-cadastrarVestibulandos();
+// Função para validar idade
+function validarIdade(idade) {
+    return idade >= 15 && idade <= 119;
+}
+
+// Função para validar salário
+function validarSalario(salario) {
+    return salario >= 2000 && salario <= 20000;
+}
+
+// Função para cadastrar os funcionários
+function cadastrarFuncionarios() {
+    let funcionarios = [];
+    let quantidade = 0;
+
+    // Loop até que o usuário cadastre no mínimo 5 e no máximo 100 funcionários
+    while (quantidade < 5 || confirm("Deseja cadastrar mais um funcionário?")) {
+        if (quantidade >= 100) {
+            alert("Você atingiu o limite de 100 funcionários.");
+            break;
+        }
+
+        let nome = prompt("Informe o nome completo do funcionário:");
+        if (!validarNome(nome)) {
+            alert("Inválido. O nome deve ser completo (Nome e Sobrenome).");
+            continue;
+        }
+
+        let idade = parseInt(prompt("Informe a idade do funcionário:"));
+        if (isNaN(idade) || !validarIdade(idade)) {
+            alert("Inválida. Deve ser entre 15 e 119 anos.");
+            continue;
+        }
+
+        let salario = parseFloat(prompt("Informe o salário do funcionário (entre R$ 2000,00 e R$ 20000,00):"));
+        if (isNaN(salario) || !validarSalario(salario)) {
+            alert("Inválido. Deve ser entre R$ 2000,00 e R$ 20000,00.");
+            continue;
+        }
+
+        // Armazenar o funcionário no array
+        funcionarios.push({ nome: nome, idade: idade, salario: salario });
+        quantidade++;
+    }
+
+    // Exibir funcionários cadastrados no documento HTML ! <li> representa uma tag HTML que representa uma lista
+    if (funcionarios.length > 0) {
+        document.write("<h2> Funcionários Cadastrados: </h2>");
+        document.write("<ul>");
+        for (let i = 0; i < funcionarios.length; i++) {
+            document.write("<li> Nome: " + funcionarios[i].nome + ", Idade: " + funcionarios[i].idade + ", Salário: R$ " + funcionarios[i].salario.toFixed(2) + "</li>");
+        }
+        document.write("</ul>"); // representa uma lista não ordenada
+    } else {
+        document.write("<p> Nenhum funcionário foi cadastrado. </p>");
+    }
+}
+
+// Iniciar o processo de cadastro
+cadastrarFuncionarios();

@@ -34,7 +34,7 @@ function validarHorasTrabalhadas(horas) {
 }
 
 // Loop para garantir que no mínimo 5 prestadores sejam cadastrados
-while (continuar || prestadores.length < 3) {
+while (continuar || prestadores.length < 5) {
     let nome, pis, valorHora, horasTrabalhadas;
 
     // Garantir que o nome completo seja inserido corretamente
